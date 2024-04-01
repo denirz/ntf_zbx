@@ -8,13 +8,13 @@ CONFIGTEMPLATE = "config.ini.correct"
 
 class TestConfig(TestCase):
     def setUp(self) -> None:
-        shutil.move(CONFIGTEMPLATE, "config.ini")
+        shutil.move(CONFIGTEMPLATE, "../config.ini")
         from ntf_zbx.config import CP
         self.CP = CP
         pass
 
     def tearDown(self) -> None:
-        shutil.move("config.ini", CONFIGTEMPLATE)
+        shutil.move("../config.ini", CONFIGTEMPLATE)
         pass
 
     def test_configparser(self):
