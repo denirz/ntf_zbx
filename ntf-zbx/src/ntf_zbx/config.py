@@ -17,13 +17,7 @@ def check_cmd():
     """
     cmd = CP.get("Sender", "cmd").strip("'")
     for f in os.environ['PATH'].split(":"):
-        # print(os.listdir(f))
         if cmd in os.listdir(f):
             return True #todo add checks if file is executable
     return False
-    # print(os.environ['PYTHONPATH'])
-    # for f in sys.path:
-    #     print(f)
-    #     print(os.listdir(f))
-    # return cmd
 

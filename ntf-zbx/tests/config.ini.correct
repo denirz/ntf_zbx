@@ -1,0 +1,3 @@
+## Config.ini required for tests
+[Sender]
+cmd = 'ls'
