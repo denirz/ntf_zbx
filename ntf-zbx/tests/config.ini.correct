@@ -1,3 +1,5 @@
 ## Config.ini required for tests
 [Sender]
-cmd = 'ls'
+;cmd = 'ls'
+cmd = 'ls -lRFt {} {somedata}'
+;cmd = 'sleep 10'
