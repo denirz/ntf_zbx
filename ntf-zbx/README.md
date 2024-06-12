@@ -1,12 +1,16 @@
 # ntf_zbx
-Zabbix or cmd line  Notification Python tiny project 
+Zabbix or cmd line  Notification tiny project Written in python  
 
 ## Main Idea 
 
-code like 
+Code like 
 
 from nft_zbx import trap
-trap("Message to send") ## Will send tyrasd to zabbix  using `zabbix_sender` or an y other configured tool to send it
+trap("Message to send") ## Will send Trap  to zabbix  using `zabbix_sender` or any other configured tool to send it
 '''
-if zabbix sender not congurd or not installed - nothing happends
+from ntf_zbx.cmdsender import call_action
+res = call_action(item="itemName", text="text to transmit here")
+assert res ==0
 '''
+
+

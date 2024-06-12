@@ -5,13 +5,13 @@ build-backend = "hatchling.build"
 [project]
 name = "ntf-zbx"
 dynamic = ["version"]
-description = ''
+description = 'Execute CLI in act_conf.ini file  when calling special '
 readme = "README.md"
 requires-python = ">=3.8"
 license = "MIT"
 keywords = []
 authors = [
-  { name = "Denis Irz", email = "void@some.where" },
+  { name = "Denis Irz", email = "denirz@gmail.com" },
 ]
 classifiers = [
   "Development Status :: 4 - Beta",
@@ -34,13 +34,41 @@ Source = "https://github.com/unknown/ntf-zbx"
 [tool.hatch.version]
 path = "src/ntf_zbx/__about__.py"
 
+
+[tool.hatch.build.targets.sdist]
+include = ["*/tests/config.ini.correct",
+        "src/",]
+
+[tool.hatch.build.targets.wheel]
+include = ["*/tests/config.ini.correct",
+        "src/",]
+
+#[tool.hatch.build.hooks.pytest]
+
+
+
+
+[tool.hatch.envs.hatch-test]
+
+[tool.hatch.envs.hatch-test.scripts]
+run = "pytest{env:HATCH_TEST_ARGS:} {args}"
+#run = "cd tests/; export PYTHONPATH=../src;python -m unittest   "
+
+[tool.hatch.envs.test]
+dependencies = [
+  "pytest",
+  "pytest-cov"
+]
+
 [tool.hatch.envs.default]
 dependencies = [
   "coverage[toml]>=6.5",
   "pytest",
 ]
 [tool.hatch.envs.default.scripts]
-test = "pytest {args:tests}"
+#pytest = "pwd;export PYTHONPATH=src;pwd; pytest {args:tests} --rootdir=tests/"
+pytest = "pwd;export PYTHONPATH=src;pwd; pytest {args:tests} --rootdir=tests/"
+test = "cd tests/; export PYTHONPATH=../src;python -m unittest   "
 test-cov = "coverage run -m pytest {args:tests}"
 cov-report = [
   "- coverage combine",
@@ -79,3 +107,37 @@ exclude_lines = [
   "if __name__ == .__main__.:",
   "if TYPE_CHECKING:",
 ]
+
+[tool.ruff.format]
+preview = true
+quote-style = "single"
+
+[tool.ruff.lint]
+preview = true
+extend-select = ["C901",
+                "G004", #Logging statement uses f-string
+                "PLC0415",
+                  ]
+
+[tool.ruff.lint.extend-per-file-ignores]
+"docs/.hooks/*" = ["INP001", "T201"]
+"src/*" = [
+                  "G004", #Logging statement uses f-string
+                "PLC0415",
+                "TRY300",# Consider moving this statement to an `else` block
+
+]
+"tests/*" = [
+             "PLC0415",
+     "ARG001",# Unused function argument: `create_config`
+     "PT009", # Use a regular `assert` instead of unittest-style `assertIsInstance`
+     "T201",  # `print` found
+     "N802", # Function name `testSenderwithtimeout` should be lowercase
+     "N801",# Class name `Test_cmdserder_correct` should use CapWords convention
+]
+"tests/test_config.py" = [
+     "PT027", # Use `pytest.raises` instead of unittest-style `assertRaises`
+
+]
+[tool.ruff.lint.isort]
+known-first-party = ["foo", "bar"]

@@ -1,17 +1,29 @@
 """
 Read config an defined CP object with all reauilred config data
 """
+
 import os
-import sys
 from configparser import ConfigParser
-if not os.path.exists("../../config.ini"):
-    print(os.environ['PATH'])
-    print(os.environ['PYTHONPATH'])
-    raise FileNotFoundError("config.ini not found!")
 
+filedir = os.path.dirname(os.path.abspath(__file__))
+curdir = os.path.abspath(os.curdir)
 CP = ConfigParser()
-CP.read(filenames="config.ini")
 
+configfound = False
+for p in [
+    curdir,
+    filedir,
+]:
+    filename = os.path.join(p, "act_conf.ini")
+    try:
+        with open(os.path.join(p, "act_conf.ini"), encoding="utf-8") as f:
+            CP.read_file(f)
+            configfound = True
+            break
+    except FileNotFoundError:
+        continue
+if not configfound:
+    raise FileNotFoundError
 
 
 def check_cmd():
@@ -20,8 +32,10 @@ def check_cmd():
     :return:
     """
     cmd = CP.get("Sender", "cmd").strip("'")
-    for f in os.environ['PATH'].split(":"):
-        if cmd in os.listdir(f):
-            return True #todo add checks if file is executable
+    for f in os.environ["PATH"].split(":"):
+        try: # TODO: Seems to be fixed and tested specially
+            if cmd in os.listdir(f):
+                return True  # TODO: add checks if file is executable
+        except FileNotFoundError:
+            pass
     return False
-
