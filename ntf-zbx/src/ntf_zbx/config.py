@@ -1,11 +1,11 @@
 """
 Read config an defined CP object with all reauilred config data
 """
+import importlib
 import logging
 import os
-import sys
 from configparser import ConfigParser
-import importlib
+
 filedir = os.path.dirname(os.path.abspath(__file__))
 curdir = os.path.abspath(os.curdir)
 CP = ConfigParser()
@@ -18,7 +18,7 @@ for p in (
 ):
     filename = os.path.join(p, "act_conf.ini")
     try:
-        with open(os.path.join(p, "act_conf.ini"),'r', encoding="utf-8") as f:
+        with open(os.path.join(p, "act_conf.ini"), encoding="utf-8") as f:
             CP.read_file(f)
             # print(f.read())
             configfound = True
@@ -72,7 +72,6 @@ def config_reload():
     if "ntf_zbx" in globals():
         importlib.reload(ntf_zbx)
     return 0
-    pass
 
 
 def config_info():
@@ -85,6 +84,5 @@ def config_info():
         print(f"[{section}]")
         for key in CP[section]:
             print(f"{key} = {CP[section][key]}")
-    pass
 
 

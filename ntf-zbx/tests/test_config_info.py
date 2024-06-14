@@ -1,5 +1,7 @@
-import pytest
 import os
+from time import sleep
+import pytest
+
 
 @pytest.fixture
 def create_config():
@@ -17,17 +19,21 @@ DebugLevel=10
     """
     with open("./act_conf.ini", "w", encoding="utf-8") as f:
         f.write(act_conf)
+    sleep(1)
     yield "create_config"
-    os.remove("act_conf.ini")
+    os.remove("./act_conf.ini")
 
 
-def test_config_info(capfd,create_config):
+def test_config_info(capfd, create_config):
     currentdir = os.path.abspath(os.curdir)
+    print(f"currentdir:{currentdir}")
     from ntf_zbx import config
     config.config_reload()
     config.config_info()
     resout = capfd.readouterr().out
+    print("+++++")
     print(resout)
+    print("+++++")
     print(currentdir)
     assert resout.find(currentdir) >= 0
 
@@ -35,5 +41,5 @@ def test_checkalias(capfd):
     #
     from ntf_zbx import ci
     ci()
-    resout  = capfd.readouterr().out
-    print(resout)  #  print(resout)
+    resout = capfd.readouterr().out
+    print(resout)  # print(resout)
