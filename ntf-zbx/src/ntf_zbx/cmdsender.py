@@ -1,9 +1,11 @@
 import logging
+import re
 import subprocess
 
 from ntf_zbx.config import CP
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=CP.get("Sender","DebugLevel",fallback=logging.INFO))
+# logging.basicConfig(level=logging.INFO)  # todo: научиться управлять DEBUG
 
 
 def call_action(item="", text="", timeout=CP.getint("sender", "Timeout", fallback=60)):
@@ -22,7 +24,9 @@ def call_action(item="", text="", timeout=CP.getint("sender", "Timeout", fallbac
         logging.warning(f"Error in data {text},{item}: {command}")
         if CP.getboolean("Sender", "FailOnError", fallback=False):
             raise ValueError
-    command = command.split(" ")
+    # command = command.split()  # multiple spaces are allowed without args
+    # command = re.findall("(?:\".*?\"|\\S)+",command)
+    command = [x.strip('"') for x in  re.findall("(?:\".*?\"|\\S)+", command)]
     logging.debug(f"Running {command}...")
     try:
         res = subprocess.run(command, capture_output=True, timeout=timeout, check=False)

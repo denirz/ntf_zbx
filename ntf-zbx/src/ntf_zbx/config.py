@@ -1,7 +1,7 @@
 """
 Read config an defined CP object with all reauilred config data
 """
-
+import logging
 import os
 from configparser import ConfigParser
 
@@ -10,15 +10,18 @@ curdir = os.path.abspath(os.curdir)
 CP = ConfigParser()
 
 configfound = False
-for p in [
+for p in (
     curdir,
     filedir,
-]:
+):
     filename = os.path.join(p, "act_conf.ini")
     try:
         with open(os.path.join(p, "act_conf.ini"), encoding="utf-8") as f:
             CP.read_file(f)
+            # print(f.read())
             configfound = True
+            configlocation = os.path.join(p, "act_conf.ini")
+            logging.debug(f"Config location = {configlocation}")
             break
     except FileNotFoundError:
         continue
@@ -33,9 +36,12 @@ def check_cmd():
     """
     cmd = CP.get("Sender", "cmd").strip("'")
     for f in os.environ["PATH"].split(":"):
-        try: # TODO: Seems to be fixed and tested specially
+        try:  # TODO: Seems to be fixed and tested specially
             if cmd in os.listdir(f):
                 return True  # TODO: add checks if file is executable
         except FileNotFoundError:
             pass
     return False
+
+
+# todo: добавить функцию отображения конфига

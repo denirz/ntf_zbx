@@ -36,12 +36,12 @@ path = "src/ntf_zbx/__about__.py"
 
 
 [tool.hatch.build.targets.sdist]
-include = ["*/tests/config.ini.correct",
-        "src/",]
+#include = ["*/tests/config.ini.correct",
+#        "src/",]
 
 [tool.hatch.build.targets.wheel]
-include = ["*/tests/config.ini.correct",
-        "src/",]
+#include = ["*/tests/config.ini.correct",
+#        "src/",]
 
 #[tool.hatch.build.hooks.pytest]
 
