@@ -3,4 +3,4 @@
 # SPDX-License-Identifier: MIT
 # __all__ = ["cmdsender", "config"]
 from ntf_zbx.cmdsender import call_action as zs
-from ntf_zbx.config import config_info as ci
+from ntf_zbx.config import config_info as ci # Promt current config info

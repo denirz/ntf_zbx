@@ -24,6 +24,7 @@ DebugLevel=10
 def test_config_info(capfd,create_config):
     currentdir = os.path.abspath(os.curdir)
     from ntf_zbx import config
+    config.config_reload()
     config.config_info()
     resout = capfd.readouterr().out
     print(resout)
