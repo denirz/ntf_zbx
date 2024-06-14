@@ -1,4 +1,5 @@
 from ntf_zbx import cmdsender
+
 # from ntf_zbx import zs
 
 def test_call():

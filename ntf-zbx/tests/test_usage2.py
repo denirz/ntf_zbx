@@ -1,8 +1,9 @@
+import importlib
 import logging
 import os
-import importlib
 
 import pytest
+
 
 @pytest.fixture
 def remove_config():
@@ -31,7 +32,7 @@ DebugLevel=10
     yield "create_config"
     os.remove("act_conf.ini")
 
-def test_somedata(create_config,caplog):
+def test_somedata(create_config, caplog):
     # assert "act_conf.ini" not in os.listdir(os.curdir);
     caplog.set_level(10)
     importlib.invalidate_caches()
@@ -45,10 +46,10 @@ def test_somedata(create_config,caplog):
 def test_runwithconf(create_config, caplog):
     # print(caplog.__dir__())
     print(os.curdir)
-    with open("./act_conf.ini",'r') as f:
+    with open("./act_conf.ini") as f:
         print(f.read())
     # print(os.listdir(os.curdir))
-    assert "act_conf.ini" in os.listdir(os.curdir);
+    assert "act_conf.ini" in os.listdir(os.curdir)
 
     importlib.invalidate_caches()
     from ntf_zbx.cmdsender import call_action
