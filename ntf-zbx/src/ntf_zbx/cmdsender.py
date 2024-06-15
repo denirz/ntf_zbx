@@ -26,7 +26,8 @@ def call_action(item="", text="", timeout=CP.getint("sender", "Timeout", fallbac
             raise ValueError
     # command = command.split()  # multiple spaces are allowed without args
     # command = re.findall("(?:\".*?\"|\\S)+",command)
-    command = [x.strip('"') for x in re.findall("(?:\".*?\"|\\S)+", command)]
+    # command = [x.strip('"') for x in re.findall("(?:\".*?\"|\\S)+", command)]
+    command = [x.strip('"') for x in re.findall("(?:\"(?:.*?|[\n]*)*\"|\\S)+", command)]
     logging.debug(f"Running {command}...")
     try:
         res = subprocess.run(command, capture_output=True, timeout=timeout, check=False)
